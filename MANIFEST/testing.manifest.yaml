@@ -1,0 +1,4 @@
+COMMAND:
+  - name: Testing
+    key: TESTING
+    type: SIMULATION
