@@ -11,18 +11,13 @@ def CONNECT(init_container: NodeInitContainer) -> Bytes:
     Bytes
         Containing a handle to the robot arm object, which is connected, but not activated or homed.
     """
-    ConnHandle = init_container.get()
-    if ConnHandle.robot is None:
-        raise ValueError("Robot communication is not open.")
-
-    if not ConnHandle.robot.IsConnected():
-        raise ValueError("Robot connection failed.")
-
-    return Bytes(b=ConnHandle.b)
+    conn_handle: Bytes = init_container.get()
+    check_connection(conn_handle.b)
+    return conn_handle
 
 
 @node_initialization(for_node=CONNECT)
 def init(address: str = '192.168.0.100') -> Bytes:
     robot: mdr.Robot = mdr.Robot()
     robot.Connect(address=address)
-    return Bytes(robot=robot)
+    return Bytes(b=robot)
