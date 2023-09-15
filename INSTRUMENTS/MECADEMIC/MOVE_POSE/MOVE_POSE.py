@@ -1,10 +1,11 @@
 from flojoy import flojoy, Bytes
 from typing import Optional
+from PYTHON.utils.mecademic_utils import check_connection
 
 
 @flojoy(deps={"mecademicpy": "1.4.0"})
 def MOVE_POSE(
-    ConnHandle: Bytes, # TODO: use explicit generic type for robot in the Bytes IE Bytes[MecademicRobotHandle]
+    conn_handle: Bytes, # TODO: use explicit generic type for robot in the Bytes IE Bytes[MecademicRobotHandle]
     x: float,
     y: float,
     z: float,
@@ -17,7 +18,7 @@ def MOVE_POSE(
 
     Inputs
     ------
-    ConnHandle
+    conn_handle
         A handle to the robot arm object.
 
     Parameters
@@ -37,12 +38,10 @@ def MOVE_POSE(
 
     Returns
     -------
-    ConnHandle
+    conn_handle
         A handle to the robot arm object after it has been moved.
 
     """
-    if not ConnHandle.robot.IsConnected():
-        raise ValueError("Robot connection failed.")
-
-    ConnHandle.robot.MovePose(x=x, y=y, z=z, alpha=alpha, beta=beta, gamma=gamma)
-    return ConnHandle
+    check_connection(conn_handle.b)
+    conn_handle.b.MovePose(x=x, y=y, z=z, alpha=alpha, beta=beta, gamma=gamma)
+    return conn_handle

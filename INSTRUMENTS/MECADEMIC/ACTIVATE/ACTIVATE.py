@@ -1,14 +1,15 @@
 from flojoy import flojoy, Bytes
+from PYTHON.utils.mecademic_utils import check_connection
 
 
 @flojoy(deps={"mecademicpy": "1.4.0"})
-def ACTIVATE(ConnHandle: Bytes) -> Bytes:
+def ACTIVATE(conn_handle: Bytes) -> Bytes:
     """
     The ACTIVATE node activates the robot arm.
 
     Inputs
     ------
-    ConnHandle
+    conn_handle
         A handle to the robot arm object.
 
     Returns
@@ -17,8 +18,6 @@ def ACTIVATE(ConnHandle: Bytes) -> Bytes:
         Containing a handle to the activated robot arm object.
 
     """
-    if not ConnHandle.robot.IsConnected():
-        raise ValueError("Robot connection failed.")
-
-    ConnHandle.robot.Activate()
-    return ConnHandle
+    check_connection(conn_handle.b)
+    conn_handle.b.Activate()
+    return conn_handle
